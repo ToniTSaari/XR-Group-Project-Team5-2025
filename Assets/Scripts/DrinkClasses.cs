@@ -12,10 +12,10 @@ public class DrinkClasses : MonoBehaviour
         public string ingredientUnit;
     }
     [System.Serializable]
-    public class DrinkRecipes
+    public class DrinkObject
     {
         public string drinkName;
         public List<DrinkIngredients> ingredients = new List<DrinkIngredients>();
     }
-    public List<DrinkRecipes> drinkRecipes = new List<DrinkRecipes>();
+    public List<DrinkObject> drinks = new List<DrinkObject>();
 }
