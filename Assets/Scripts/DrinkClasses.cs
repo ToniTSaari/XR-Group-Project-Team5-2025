@@ -4,15 +4,18 @@ using UnityEngine;
 
 public class DrinkClasses : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    [System.Serializable]
+    public class DrinkIngredients
     {
-        
+        public string ingredientName;
+        public float ingredientAmount;
+        public string ingredientUnit;
     }
-
-    // Update is called once per frame
-    void Update()
+    [System.Serializable]
+    public class DrinkRecipes
     {
-        
+        public string drinkName;
+        public List<DrinkIngredients> ingredients = new List<DrinkIngredients>();
     }
+    public List<DrinkRecipes> drinkRecipes = new List<DrinkRecipes>();
 }
