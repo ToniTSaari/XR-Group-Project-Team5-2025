@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using UnityEngine.Events;
 using UnityEngine.XR.Interaction.Toolkit;
+using FadeCanvasUI;
 
 public class TeleportAreaWithFade : TeleportationArea
 {
