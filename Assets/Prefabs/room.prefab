@@ -63,6 +63,7 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+<<<<<<< Updated upstream
     - target: {fileID: -5397612521403030244, guid: d14bc29b9654e924e9b3f6cc800976dd,
         type: 3}
       propertyPath: m_StaticEditorFlags
@@ -73,15 +74,39 @@ PrefabInstance:
       propertyPath: m_StaticEditorFlags
       value: 2147483647
       objectReference: {fileID: 0}
+=======
+    - target: {fileID: -6230566979220459090, guid: d14bc29b9654e924e9b3f6cc800976dd,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -4260959075806235923, guid: d14bc29b9654e924e9b3f6cc800976dd,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 5710825c0e74c3b42980ab4c4fa79442, type: 2}
+    - target: {fileID: -1309053598085124283, guid: d14bc29b9654e924e9b3f6cc800976dd,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 5710825c0e74c3b42980ab4c4fa79442, type: 2}
+>>>>>>> Stashed changes
     - target: {fileID: 919132149155446097, guid: d14bc29b9654e924e9b3f6cc800976dd,
         type: 3}
       propertyPath: m_Name
       value: room
       objectReference: {fileID: 0}
+<<<<<<< Updated upstream
     - target: {fileID: 919132149155446097, guid: d14bc29b9654e924e9b3f6cc800976dd,
         type: 3}
       propertyPath: m_StaticEditorFlags
       value: 2147483647
+=======
+    - target: {fileID: 4334044016728780798, guid: d14bc29b9654e924e9b3f6cc800976dd,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+>>>>>>> Stashed changes
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
