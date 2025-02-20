@@ -19,7 +19,15 @@ namespace Convai.Scripts.Runtime.Features
         Crouch,
         MoveTo,
         PickUp,
-        Drop
+        Drop,
+        Drinking,
+        GrabObject,
+        Sitting,
+        Sitting2,
+        SittingDown,
+        SittingDown2,
+        SittingDrinking,
+        SittingPose
     }
 
     /// <summary>
@@ -335,6 +343,46 @@ namespace Convai.Scripts.Runtime.Features
                 case ActionChoice.Crouch:
                     // Call the Crouch function and yield until it's completed
                     yield return Crouch();
+                    break;
+
+                case ActionChoice.Drinking:
+                    // Call the Drinking function
+                    yield return Drinking(action.Target);
+                    break;
+
+                case ActionChoice.GrabObject:
+                    // Call the GrabObject function
+                    yield return GrabObject(action.Target);
+                    break;
+
+                case ActionChoice.Sitting:
+                    // Call the Sitting function
+                    yield return Sitting(action.Target);
+                    break;
+
+                case ActionChoice.Sitting2:
+                    // Call the Sitting2 function
+                    yield return Sitting2(action.Target);
+                    break;
+
+                case ActionChoice.SittingDown:
+                    // Call the SittingDown function
+                    yield return SittingDown(action.Target);
+                    break;
+
+                case ActionChoice.SittingDown2:
+                    // Call the SittingDown2 function
+                    yield return SittingDown2(action.Target);
+                    break;
+
+                case ActionChoice.SittingDrinking:
+                    // Call the SittingDrinking function
+                    yield return SittingDrinking(action.Target);
+                    break;
+
+                case ActionChoice.SittingPose:
+                    // Call the SittingPose function
+                    yield return SittingPose(action.Target);
                     break;
 
                 case ActionChoice.None:
@@ -783,5 +831,492 @@ namespace Convai.Scripts.Runtime.Features
         // STEP 3: Add the function for your action here.
 
         #endregion
+        //ChatGPT version
+        private IEnumerator Drinking(GameObject target)
+        {
+            _currentNPC.GetComponent<Animator>().CrossFade(Animator.StringToHash("Drinking"), 0.05f);
+            yield return new WaitForSeconds(7.167f); // Adjust timing based on animation length
+            _currentNPC.GetComponent<Animator>().CrossFade(Animator.StringToHash("Idle"), 0.05f);
+        }
+
+        private IEnumerator GrabObject(GameObject target)
+        {
+            _currentNPC.GetComponent<Animator>().CrossFade(Animator.StringToHash("GrabObject"), 0.05f);
+            yield return new WaitForSeconds(2.433f);
+            _currentNPC.GetComponent<Animator>().CrossFade(Animator.StringToHash("Idle"), 0.05f);
+        }
+
+        private IEnumerator Sitting(GameObject target)
+        {
+            _currentNPC.GetComponent<Animator>().CrossFade(Animator.StringToHash("Sitting"), 0.05f);
+            yield return new WaitForSeconds(1.2f);
+        }
+
+        private IEnumerator Sitting2(GameObject target)
+        {
+            _currentNPC.GetComponent<Animator>().CrossFade(Animator.StringToHash("Sitting2"), 0.05f);
+            yield return new WaitForSeconds(4.5f);
+        }
+
+        private IEnumerator SittingDown(GameObject target)
+        {
+            _currentNPC.GetComponent<Animator>().CrossFade(Animator.StringToHash("SittingDown"), 0.05f);
+            yield return new WaitForSeconds(3.8f);
+        }
+
+        private IEnumerator SittingDown2(GameObject target)
+        {
+            _currentNPC.GetComponent<Animator>().CrossFade(Animator.StringToHash("SittingDown2"), 0.05f);
+            yield return new WaitForSeconds(3.233f);
+        }
+
+        private IEnumerator SittingDrinking(GameObject target)
+        {
+            _currentNPC.GetComponent<Animator>().CrossFade(Animator.StringToHash("SittingDrinking"), 0.05f);
+            yield return new WaitForSeconds(3.633f);
+        }
+
+        private IEnumerator SittingPose(GameObject target)
+        {
+            _currentNPC.GetComponent<Animator>().CrossFade(Animator.StringToHash("SittingPose"), 0.05f);
+            yield return new WaitForSeconds(0.033f);
+        }
+
+
+        /*
+        //Copilot version
+        private IEnumerator Drinking(GameObject target)
+        {
+            ActionStarted?.Invoke("Drinking", target);
+
+            if (target == null)
+            {
+                ConvaiLogger.DebugLog("Target is null! Exiting Drinking coroutine.", ConvaiLogger.LogCategory.Actions);
+                           yield break;
+                       }
+    
+               if (!target.activeInHierarchy)
+                   {
+                       ConvaiLogger.DebugLog($"Target: {target.name} is inactive! Exiting Drinking coroutine.",
+                           ConvaiLogger.LogCategory.Actions);
+                       yield break;
+                   }
+
+            Vector3 direction = (target.transform.position - transform.position).normalized;
+            direction.y = 0;
+            Quaternion targetRotation = Quaternion.LookRotation(direction);
+            float elapsedTime = 0f;
+            float rotationTime = 0.5f;
+
+            while (elapsedTime < rotationTime)
+{
+                targetRotation.x = 0;
+                targetRotation.z = 0;
+                transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, elapsedTime / rotationTime);
+
+                elapsedTime += Time.deltaTime;
+                yield return null;
+            }
+            
+                       ConvaiLogger.DebugLog($"Drinking from Target: {target.name}", ConvaiLogger.LogCategory.Actions);
+
+            Animator animator = _currentNPC.GetComponent<Animator>();
+            animator.CrossFade(Animator.StringToHash("Drinking"), 0.1f);
+
+            yield return new WaitForSeconds(1);
+
+            float timeToReachObject = 1f;
+            yield return new WaitForSeconds(timeToReachObject);
+
+            if (!target.activeInHierarchy)
+{
+                ConvaiLogger.DebugLog(
+                                       $"Target: {target.name} became inactive during the drinking animation! Exiting Drinking coroutine.", ConvaiLogger.LogCategory.Actions);
+                yield break;
+            }
+            
+                       target.transform.parent = gameObject.transform;
+            target.SetActive(false);
+
+            animator.CrossFade(Animator.StringToHash("Idle"), 0.4f);
+
+            ActionEnded?.Invoke("Drinking", target);
+        }
+
+        private IEnumerator GrabObject(GameObject target)
+        {
+            ActionStarted?.Invoke("GrabObject", target);
+
+            if (target == null)
+            {
+                ConvaiLogger.DebugLog("Target is null! Exiting GrabObject coroutine.", ConvaiLogger.LogCategory.Actions);
+                yield break;
+            }
+
+            if (!target.activeInHierarchy)
+            {
+                ConvaiLogger.DebugLog($"Target: {target.name} is inactive! Exiting GrabObject coroutine.", ConvaiLogger.LogCategory.Actions);
+                yield break;
+            }
+
+            Vector3 direction = (target.transform.position - transform.position).normalized;
+            direction.y = 0;
+            Quaternion targetRotation = Quaternion.LookRotation(direction);
+            float elapsedTime = 0f;
+            float rotationTime = 0.5f;
+
+            while (elapsedTime < rotationTime)
+            {
+                targetRotation.x = 0;
+                targetRotation.z = 0;
+                transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, elapsedTime / rotationTime);
+
+                elapsedTime += Time.deltaTime;
+                yield return null;
+            }
+
+            ConvaiLogger.DebugLog($"Grabbing Target: {target.name}", ConvaiLogger.LogCategory.Actions);
+
+            Animator animator = _currentNPC.GetComponent<Animator>();
+            animator.CrossFade(Animator.StringToHash("Grabbing"), 0.1f);
+
+            yield return new WaitForSeconds(1);
+
+            float timeToReachObject = 1f;
+            yield return new WaitForSeconds(timeToReachObject);
+
+            if (!target.activeInHierarchy)
+            {
+                ConvaiLogger.DebugLog(
+                                       $"Target: {target.name} became inactive during the grab object animation! Exiting GrabObject coroutine.", ConvaiLogger.LogCategory.Actions);
+                yield break;
+            }
+
+            target.transform.parent = gameObject.transform;
+            target.SetActive(false);
+
+            animator.CrossFade(Animator.StringToHash("Idle"), 0.4f);
+
+            ActionEnded?.Invoke("GrabObject", target);
+        }
+
+        private IEnumerator Sitting(GameObject target)
+        {
+            ActionStarted?.Invoke("Sitting", target);
+
+            if (target == null)
+            {
+                ConvaiLogger.DebugLog("Target is null! Exiting Sitting coroutine.", ConvaiLogger.LogCategory.Actions);
+                yield break;
+            }
+
+            if (!target.activeInHierarchy)
+            {
+                ConvaiLogger.DebugLog($"Target: {target.name} is inactive! Exiting Sitting coroutine.", ConvaiLogger.LogCategory.Actions);
+                yield break;
+            }
+
+            Vector3 direction = (target.transform.position - transform.position).normalized;
+            direction.y = 0;
+            Quaternion targetRotation = Quaternion.LookRotation(direction);
+            float elapsedTime = 0f;
+            float rotationTime = 0.5f;
+
+            while (elapsedTime < rotationTime)
+            {
+                targetRotation.x = 0;
+                targetRotation.z = 0;
+                transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, elapsedTime / rotationTime);
+
+                elapsedTime += Time.deltaTime;
+                yield return null;
+            }
+
+            ConvaiLogger.DebugLog($"Sitting on Target: {target.name}", ConvaiLogger.LogCategory.Actions);
+
+            Animator animator = _currentNPC.GetComponent<Animator>();
+            animator.CrossFade(Animator.StringToHash("Sitting"), 0.1f);
+
+            yield return new WaitForSeconds(1);
+
+            float timeToReachObject = 1f;
+            yield return new WaitForSeconds(timeToReachObject);
+
+            if (!target.activeInHierarchy)
+            {
+                ConvaiLogger.DebugLog(
+                $"Target: {target.name} became inactive during the sitting animation! Exiting Sitting coroutine.", ConvaiLogger.LogCategory.Actions);
+                yield break;
+            }
+
+            target.transform.parent = gameObject.transform;
+            target.SetActive(false);
+
+            animator.CrossFade(Animator.StringToHash("Idle"), 0.4f);
+
+            ActionEnded?.Invoke("Sitting", target);
+        }
+
+        private IEnumerator Sitting2(GameObject target)
+        {
+            ActionStarted?.Invoke("Sitting2", target);
+
+            if (target == null)
+            {
+                ConvaiLogger.DebugLog("Target is null! Exiting Sitting2 coroutine.", ConvaiLogger.LogCategory.Actions);
+                yield break;
+            }
+
+            if (!target.activeInHierarchy)
+            {
+                ConvaiLogger.DebugLog($"Target: {target.name} is inactive! Exiting Sitting2 coroutine.", ConvaiLogger.LogCategory.Actions);
+                yield break;
+            }
+
+            Vector3 direction = (target.transform.position - transform.position).normalized;
+            direction.y = 0;
+            Quaternion targetRotation = Quaternion.LookRotation(direction);
+            float elapsedTime = 0f;
+            float rotationTime = 0.5f;
+
+            while (elapsedTime < rotationTime)
+            {
+                targetRotation.x = 0;
+                targetRotation.z = 0;
+                transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, elapsedTime / rotationTime);
+
+                elapsedTime += Time.deltaTime;
+                yield return null;
+            }
+
+            ConvaiLogger.DebugLog($"Sitting on Target: {target.name}", ConvaiLogger.LogCategory.Actions);
+
+            Animator animator = _currentNPC.GetComponent<Animator>();
+            animator.CrossFade(Animator.StringToHash("Sitting2"), 0.1f);
+
+            yield return new WaitForSeconds(1);
+
+            float timeToReachObject = 1f;
+            yield return new WaitForSeconds(timeToReachObject);
+
+            if (!target.activeInHierarchy)
+            {
+                ConvaiLogger.DebugLog($"Target: {target.name} became inactive during the sitting animation! Exiting Sitting2 coroutine.", ConvaiLogger.LogCategory.Actions);
+                yield break;
+            }
+
+            target.transform.parent = gameObject.transform;
+            target.SetActive(false);
+
+            animator.CrossFade(Animator.StringToHash("Idle"), 0.4f);
+
+            ActionEnded?.Invoke("Sitting2", target);
+        }
+
+        private IEnumerator SittingDown(GameObject target)
+        {
+            ActionStarted?.Invoke("SittingDown", target);
+
+            if (target == null)
+            {
+                ConvaiLogger.DebugLog("Target is null! Exiting SittingDown coroutine.", ConvaiLogger.LogCategory.Actions);
+                yield break;
+            }
+
+            if (!target.activeInHierarchy)
+            {
+                ConvaiLogger.DebugLog($"Target: {target.name} is inactive! Exiting SittingDown coroutine.", ConvaiLogger.LogCategory.Actions);
+                yield break;
+            }
+
+            Vector3 direction = (target.transform.position - transform.position).normalized;
+            direction.y = 0;
+            Quaternion targetRotation = Quaternion.LookRotation(direction);
+            float elapsedTime = 0f;
+            float rotationTime = 0.5f;
+
+            while (elapsedTime < rotationTime)
+            {
+                targetRotation.x = 0;
+                targetRotation.z = 0;
+                transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, elapsedTime / rotationTime);
+
+                elapsedTime += Time.deltaTime;
+                yield return null;
+            }
+
+            ConvaiLogger.DebugLog($"Sitting on Target: {target.name}", ConvaiLogger.LogCategory.Actions);
+
+            Animator animator = _currentNPC.GetComponent<Animator>();
+            animator.CrossFade(Animator.StringToHash("SittingDown"), 0.1f);
+
+            yield return new WaitForSeconds(1);
+
+            float timeToReachObject = 1f;
+            yield return new WaitForSeconds(timeToReachObject);
+
+            if (!target.activeInHierarchy)
+            {
+                ConvaiLogger.DebugLog(
+                $"Target: {target.name} became inactive during the sitting animation! Exiting SittingDown coroutine.", ConvaiLogger.LogCategory.Actions);
+                yield break;
+            }
+
+            target.transform.parent = gameObject.transform;
+            target.SetActive(false);
+
+            animator.CrossFade(Animator.StringToHash("Idle"), 0.4f);
+
+            ActionEnded?.Invoke("SittingDown", target);
+        }
+
+        private IEnumerator SittingDown2(GameObject target)
+        {
+            ActionStarted?.Invoke("SittingDown2", target);
+
+            if (target == null)
+            {
+                ConvaiLogger.DebugLog("Target is null! Exiting SittingDown2 coroutine.", 
+                ConvaiLogger.LogCategory.Actions);
+                yield break;
+            }
+
+            if (!target.activeInHierarchy)
+            {
+                ConvaiLogger.DebugLog($"Target: {target.name} is inactive! Exiting SittingDown2 coroutine.", ConvaiLogger.LogCategory.Actions);
+                yield break;
+            }
+
+            Vector3 direction = (target.transform.position - transform.position).normalized;
+            direction.y = 0;
+            Quaternion targetRotation = Quaternion.LookRotation(direction);
+            float elapsedTime = 0f;
+            float rotationTime = 0.5f;
+
+            while (elapsedTime < rotationTime)
+            {
+                targetRotation.x = 0;
+                targetRotation.z = 0;
+                transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, elapsedTime / rotationTime);
+
+                elapsedTime += Time.deltaTime;
+                yield return null;
+            }
+
+            ConvaiLogger.DebugLog($"Sitting on Target: {target.name}", ConvaiLogger.LogCategory.Actions);
+
+            Animator animator = _currentNPC.GetComponent<Animator>();
+            animator.CrossFade(Animator.StringToHash("SittingDown2"), 0.1f);
+
+            yield return new WaitForSeconds(1);
+
+            float timeToReachObject = 1f;
+            yield return new WaitForSeconds(timeToReachObject);
+
+            if (!target.activeInHierarchy)
+            {
+                ConvaiLogger.DebugLog(
+                $"Target: {target.name} became inactive during the sitting animation! Exiting SittingDown2 coroutine.", ConvaiLogger.LogCategory.Actions);
+            }
+        }
+
+        private IEnumerator SittingDrinking(GameObject target)
+        {
+            ActionStarted?.Invoke("SittingDrinking", target);
+
+            if (target == null)
+            {
+                ConvaiLogger.DebugLog("Target is null! Exiting SittingDrinking coroutine.", ConvaiLogger.LogCategory.Actions);
+                yield break;
+            }
+
+            if (!target.activeInHierarchy)
+            {
+                ConvaiLogger.DebugLog($"Target: {target.name} is inactive! Exiting SittingDrinking coroutine.", ConvaiLogger.LogCategory.Actions);
+                yield break;
+            }
+
+            Vector3 direction = (target.transform.position - transform.position).normalized;
+            direction.y = 0;
+            Quaternion targetRotation = Quaternion.LookRotation(direction);
+            float elapsedTime = 0f;
+            float rotationTime = 0.5f;
+
+            while (elapsedTime < rotationTime)
+            {
+                targetRotation.x = 0;
+                targetRotation.z = 0;
+                transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, elapsedTime / rotationTime);
+
+                elapsedTime += Time.deltaTime;
+                yield return null;
+            }
+
+            ConvaiLogger.DebugLog($"Sitting on Target: {target.name}", ConvaiLogger.LogCategory.Actions);
+
+            Animator animator = _currentNPC.GetComponent<Animator>();
+            animator.CrossFade(Animator.StringToHash("SittingDrinking"), 0.1f);
+
+            yield return new WaitForSeconds(1);
+
+            float timeToReachObject = 1f;
+            yield return new WaitForSeconds(timeToReachObject);
+
+            if (!target.activeInHierarchy)
+            {
+                ConvaiLogger.DebugLog(
+                $"Target: {target.name} became inactive during the sitting animation! Exiting SittingDrinking coroutine.", ConvaiLogger.LogCategory.Actions);
+            }
+        }
+
+        private IEnumerator SittingPose(GameObject target)
+        {
+            ActionStarted?.Invoke("SittingPose", target);
+
+            if (target == null)
+            {
+                ConvaiLogger.DebugLog("Target is null! Exiting SittingPose coroutine.", ConvaiLogger.LogCategory.Actions);
+                yield break;
+            }
+
+            if (!target.activeInHierarchy)
+            {
+                ConvaiLogger.DebugLog($"Target: {target.name} is inactive! Exiting SittingPose coroutine.",
+                ConvaiLogger.LogCategory.Actions);
+                yield break;
+            }
+
+            Vector3 direction = (target.transform.position - transform.position).normalized;
+            direction.y = 0;
+            Quaternion targetRotation = Quaternion.LookRotation(direction);
+            float elapsedTime = 0f;
+            float rotationTime = 0.5f;
+
+            while (elapsedTime < rotationTime)
+            {
+                targetRotation.x = 0;
+                targetRotation.z = 0;
+                transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, elapsedTime / rotationTime);
+
+                elapsedTime += Time.deltaTime;
+                yield return null;
+            }
+
+            ConvaiLogger.DebugLog($"Sitting on Target: {target.name}", ConvaiLogger.LogCategory.Actions);
+
+            Animator animator = _currentNPC.GetComponent<Animator>();
+            animator.CrossFade(Animator.StringToHash("SittingPose"), 0.1f);
+
+            yield return new WaitForSeconds(1);
+
+            float timeToReachObject = 1f;
+            yield return new WaitForSeconds(timeToReachObject);
+
+            if (!target.activeInHierarchy)
+            {
+                ConvaiLogger.DebugLog(
+                $"Target: {target.name} became inactive during the sitting animation! Exiting SittingPose coroutine.", ConvaiLogger.LogCategory.Actions);
+            }
+        }*/
     }
 }
