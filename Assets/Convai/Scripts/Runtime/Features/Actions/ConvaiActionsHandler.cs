@@ -21,13 +21,13 @@ namespace Convai.Scripts.Runtime.Features
         PickUp,
         Drop,
         Drinking,
-        GrabObject,
-        Sitting,
+        GrabObject
+        /*Sitting,
         Sitting2,
         SittingDown,
         SittingDown2,
         SittingDrinking,
-        SittingPose
+        SittingPose*/
     }
 
     /// <summary>
@@ -318,6 +318,9 @@ namespace Convai.Scripts.Runtime.Features
             //         Remember to yield until its return if it is an Enumerator function.
 
             // Use a switch statement to handle different action choices based on the ActionChoice enum
+
+            Debug.Log($"Executing action: {action.Verb}, Target: {action.Target?.name}, Animation: '{action.Animation}'");
+
             switch (action.Verb)
             {
                 case ActionChoice.MoveTo:
@@ -347,14 +350,16 @@ namespace Convai.Scripts.Runtime.Features
 
                 case ActionChoice.Drinking:
                     // Call the Drinking function
+                    Debug.Log("Playing Drinking animation");
                     yield return Drinking(action.Target);
                     break;
 
                 case ActionChoice.GrabObject:
                     // Call the GrabObject function
+                    Debug.Log("Playing GrabObject animation");
                     yield return GrabObject(action.Target);
                     break;
-
+                /*
                 case ActionChoice.Sitting:
                     // Call the Sitting function
                     yield return Sitting(action.Target);
@@ -383,14 +388,17 @@ namespace Convai.Scripts.Runtime.Features
                 case ActionChoice.SittingPose:
                     // Call the SittingPose function
                     yield return SittingPose(action.Target);
-                    break;
+                    break;*/
 
                 case ActionChoice.None:
                     // Call the AnimationActions function and yield until it's completed
+                    Debug.LogError($"Animation action triggered, but no animation name provided! Action: {action.Verb}");
                     yield return AnimationActions(action.Animation);
                     break;
                 default:
-                    throw new ArgumentOutOfRangeException();
+                    //throw new ArgumentOutOfRangeException();
+                    Debug.LogError($"Unknown action choice: {action.Verb}");
+                    break;
             }
 
             // Yield once to ensure the coroutine advances to the next frame
@@ -832,20 +840,143 @@ namespace Convai.Scripts.Runtime.Features
 
         #endregion
         //ChatGPT version
+
         private IEnumerator Drinking(GameObject target)
         {
-            _currentNPC.GetComponent<Animator>().CrossFade(Animator.StringToHash("Drinking"), 0.05f);
-            yield return new WaitForSeconds(7.167f); // Adjust timing based on animation length
-            _currentNPC.GetComponent<Animator>().CrossFade(Animator.StringToHash("Idle"), 0.05f);
+            if (target == null)
+            {
+                ConvaiLogger.DebugLog("Target is null! Exiting Drinking coroutine.", ConvaiLogger.LogCategory.Actions);
+                yield break;
+            }
+
+            // Rotate NPC to face the object before grabbing
+            Vector3 direction = (target.transform.position - _currentNPC.transform.position).normalized;
+            direction.y = 0; // Keep rotation on the horizontal plane
+            Quaternion targetRotation = Quaternion.LookRotation(direction);
+            float rotationTime = 0.5f; // Adjust time as needed
+            float elapsedTime = 0f;
+
+            while (elapsedTime < rotationTime)
+            {
+                _currentNPC.transform.rotation = Quaternion.Slerp(_currentNPC.transform.rotation, targetRotation, elapsedTime / rotationTime);
+                elapsedTime += Time.deltaTime;
+                yield return null;
+            }
+
+            // Get the hand transform to attach the object
+            Transform handTransform = _currentNPC.transform.Find("Armature/Hips/Spine/Spine1/Spine2/RightShoulder/RightArm/RightForeArm/RightHand/RightHandMiddle1");
+            if (handTransform == null)
+            {
+                Debug.LogError("Right hand not found!");
+                yield break; // Exit if no hand is found
+            }
+
+            // Check if the target is already a child of nothing (null) or the hand
+            if (target.transform.parent == null || target.transform.parent.name == handTransform.name)
+            {
+                // Get Rigidbody component of the target object
+                Rigidbody targetRigidbody = target.GetComponent<Rigidbody>();
+                if (targetRigidbody != null)
+                {
+                    // Disable gravity and freeze physics during the grab
+                    targetRigidbody.useGravity = false;
+                    targetRigidbody.isKinematic = true; // Make the object non-physical while grabbed
+                }
+
+                // Parent the object to the NPC's hand
+                target.transform.SetParent(handTransform);
+                target.transform.localPosition = Vector3.zero; // Adjust position if necessary
+                target.transform.localRotation = handTransform.localRotation; // Align rotation with hand
+
+                _currentNPC.GetComponent<Animator>().CrossFade(Animator.StringToHash("Drinking"), 0.05f);
+                yield return new WaitForSeconds(7.167f); // Adjust timing based on animation length
+
+                _currentNPC.GetComponent<Animator>().CrossFade(Animator.StringToHash("Idle"), 0.05f);
+            }
+            else
+            {
+                // If the object is already parented to something else, log it
+                Debug.LogWarning("The object is already parented to another object.");
+            }
+
+            // Keep object visible
+            target.SetActive(true);
         }
+
 
         private IEnumerator GrabObject(GameObject target)
         {
+            if (target == null)
+            {
+                ConvaiLogger.DebugLog("Target is null! Exiting GrabObject coroutine.", ConvaiLogger.LogCategory.Actions);
+                yield break;
+            }
+
+            // Rotate NPC to face the object before grabbing
+            Vector3 direction = (target.transform.position - _currentNPC.transform.position).normalized;
+            direction.y = 0; // Keep rotation on the horizontal plane
+            Quaternion targetRotation = Quaternion.LookRotation(direction);
+            float rotationTime = 0.5f; // Adjust time as needed
+            float elapsedTime = 0f;
+
+            while (elapsedTime < rotationTime)
+            {
+                _currentNPC.transform.rotation = Quaternion.Slerp(_currentNPC.transform.rotation, targetRotation, elapsedTime / rotationTime);
+                elapsedTime += Time.deltaTime;
+                yield return null;
+            }
+
+            // Play grab animation
             _currentNPC.GetComponent<Animator>().CrossFade(Animator.StringToHash("GrabObject"), 0.05f);
-            yield return new WaitForSeconds(2.433f);
+            //yield return new WaitForSeconds(2.433f); // Adjust timing based on animation length
+
+
+            // Get Rigidbody component of the target object
+            Rigidbody targetRigidbody = target.GetComponent<Rigidbody>();
+            if (targetRigidbody != null)
+            {
+                // Disable gravity and freeze physics during the grab
+                targetRigidbody.useGravity = false;
+                targetRigidbody.isKinematic = true; // Make the object non-physical while grabbed
+            }
+
+            // Parent the grabbed object to the NPC's hand
+            Transform handTransform = _currentNPC.transform.Find("Armature/Hips/Spine/Spine1/Spine2/RightShoulder/RightArm/RightForeArm/RightHand/RightHandMiddle1");
+            if (handTransform != null)
+            {
+                target.transform.SetParent(handTransform);
+                target.transform.localPosition = Vector3.zero; // Adjust if necessary
+                target.transform.localRotation = handTransform.localRotation;
+            }
+            else
+            {
+                Debug.LogError("Right hand not found!");
+            }
+
+            // Keep object visible
+            target.SetActive(true);
+
+            // Return to idle after grabbing
             _currentNPC.GetComponent<Animator>().CrossFade(Animator.StringToHash("Idle"), 0.05f);
+
+
+            /* 
+            // When the object is released or no longer needed, reset physics
+            // Example of releasing (can be triggered later when the object is released)
+            yield return new WaitForSeconds(3f); // Adjust the delay or trigger based on your game logic
+
+            if (targetRigidbody != null)
+            {
+            // Re-enable gravity and restore physics after the grab is done
+                targetRigidbody.useGravity = true;
+                targetRigidbody.isKinematic = false;
+            }*/
         }
 
+
+
+
+        /*
         private IEnumerator Sitting(GameObject target)
         {
             _currentNPC.GetComponent<Animator>().CrossFade(Animator.StringToHash("Sitting"), 0.05f);
@@ -880,7 +1011,7 @@ namespace Convai.Scripts.Runtime.Features
         {
             _currentNPC.GetComponent<Animator>().CrossFade(Animator.StringToHash("SittingPose"), 0.05f);
             yield return new WaitForSeconds(0.033f);
-        }
+        }*/
 
 
         /*
