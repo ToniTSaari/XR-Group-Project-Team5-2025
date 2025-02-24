@@ -110,12 +110,27 @@ PrefabInstance:
       propertyPath: m_StaticEditorFlags
       value: 2147483647
       objectReference: {fileID: 0}
+    - target: {fileID: -1235961186946972440, guid: 24f308e9503d44a49bff903cb0b77b61,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 5710825c0e74c3b42980ab4c4fa79442, type: 2}
+    - target: {fileID: -123526551535631378, guid: 24f308e9503d44a49bff903cb0b77b61,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     - target: {fileID: -27927600266317834, guid: 24f308e9503d44a49bff903cb0b77b61,
         type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
       objectReference: {fileID: 2100000, guid: 5710825c0e74c3b42980ab4c4fa79442, type: 2}
     - target: {fileID: 209325962313010142, guid: 24f308e9503d44a49bff903cb0b77b61,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 212895024860126949, guid: 24f308e9503d44a49bff903cb0b77b61,
         type: 3}
       propertyPath: m_StaticEditorFlags
       value: 2147483647
@@ -130,6 +145,11 @@ PrefabInstance:
       propertyPath: m_StaticEditorFlags
       value: 2147483647
       objectReference: {fileID: 0}
+    - target: {fileID: 1498119975735636220, guid: 24f308e9503d44a49bff903cb0b77b61,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 5710825c0e74c3b42980ab4c4fa79442, type: 2}
     - target: {fileID: 1681086655492814631, guid: 24f308e9503d44a49bff903cb0b77b61,
         type: 3}
       propertyPath: m_Materials.Array.data[0]
@@ -140,6 +160,11 @@ PrefabInstance:
       propertyPath: m_Materials.Array.data[0]
       value: 
       objectReference: {fileID: 2100000, guid: 5710825c0e74c3b42980ab4c4fa79442, type: 2}
+    - target: {fileID: 7435521727727090499, guid: 24f308e9503d44a49bff903cb0b77b61,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
