@@ -90,6 +90,16 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: 7b248b6ba0ce3b4408a9dac104f2ba33,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 5710825c0e74c3b42980ab4c4fa79442, type: 2}
+    - target: {fileID: -4551665031797285938, guid: 7b248b6ba0ce3b4408a9dac104f2ba33,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 5710825c0e74c3b42980ab4c4fa79442, type: 2}
     - target: {fileID: -3271588578463385596, guid: 7b248b6ba0ce3b4408a9dac104f2ba33,
         type: 3}
       propertyPath: m_LocalPosition.z
@@ -100,6 +110,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: mint-pot
       objectReference: {fileID: 0}
+    - target: {fileID: 1162113520767376495, guid: 7b248b6ba0ce3b4408a9dac104f2ba33,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 5710825c0e74c3b42980ab4c4fa79442, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
