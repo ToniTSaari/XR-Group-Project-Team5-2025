@@ -44,7 +44,7 @@ GameObject:
   - component: {fileID: 3141110728639373720}
   - component: {fileID: 3485286929670341881}
   m_Layer: 0
-  m_Name: Spotlight
+  m_Name: Light
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -122,7 +122,7 @@ Light:
   m_BounceIntensity: 1
   m_ColorTemperature: 5500
   m_UseColorTemperature: 1
-  m_BoundingSphereOverride: {x: 0, y: 0, z: 0, w: 0}
+  m_BoundingSphereOverride: {x: 0, y: NaN, z: 0.03515625, w: 6.085882e-19}
   m_UseBoundingSphereOverride: 0
   m_UseViewFrustumForShadowCasterCull: 1
   m_ShadowRadius: 1
@@ -210,9 +210,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -7511558181221131132, guid: 8a758045eff19f8499971bd00d212ebd,
         type: 3}
+      propertyPath: m_ScaleInLightmap
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: 8a758045eff19f8499971bd00d212ebd,
+        type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
       objectReference: {fileID: 2100000, guid: 5710825c0e74c3b42980ab4c4fa79442, type: 2}
+    - target: {fileID: -6028223637348125528, guid: 8a758045eff19f8499971bd00d212ebd,
+        type: 3}
+      propertyPath: m_ScaleInLightmap
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: -6028223637348125528, guid: 8a758045eff19f8499971bd00d212ebd,
         type: 3}
       propertyPath: m_Materials.Array.data[0]
@@ -262,6 +272,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
       value: 15.402
+      objectReference: {fileID: 0}
+    - target: {fileID: 6003673974200602506, guid: 8a758045eff19f8499971bd00d212ebd,
+        type: 3}
+      propertyPath: m_ScaleInLightmap
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 6003673974200602506, guid: 8a758045eff19f8499971bd00d212ebd,
         type: 3}
