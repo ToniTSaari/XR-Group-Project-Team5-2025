@@ -14,7 +14,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 2147483647
   m_IsActive: 1
 --- !u!4 &6936456259525123468
 Transform:
@@ -95,6 +95,11 @@ PrefabInstance:
       propertyPath: m_Materials.Array.data[0]
       value: 
       objectReference: {fileID: 2100000, guid: 5710825c0e74c3b42980ab4c4fa79442, type: 2}
+    - target: {fileID: -4690519590698296452, guid: 7b248b6ba0ce3b4408a9dac104f2ba33,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     - target: {fileID: -4551665031797285938, guid: 7b248b6ba0ce3b4408a9dac104f2ba33,
         type: 3}
       propertyPath: m_Materials.Array.data[0]
@@ -110,11 +115,21 @@ PrefabInstance:
       propertyPath: m_Name
       value: mint-pot
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 7b248b6ba0ce3b4408a9dac104f2ba33,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     - target: {fileID: 1162113520767376495, guid: 7b248b6ba0ce3b4408a9dac104f2ba33,
         type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
       objectReference: {fileID: 2100000, guid: 5710825c0e74c3b42980ab4c4fa79442, type: 2}
+    - target: {fileID: 1604560717646867366, guid: 7b248b6ba0ce3b4408a9dac104f2ba33,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
