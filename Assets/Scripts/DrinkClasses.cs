@@ -9,7 +9,7 @@ public class DrinkClasses : MonoBehaviour
     {
         public string ingredientName;
         public float ingredientAmount;
-        public string ingredientUnit;
+        public bool milliliters;
     }
     [System.Serializable]
     public class DrinkObject

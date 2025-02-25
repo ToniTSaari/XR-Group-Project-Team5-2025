@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UIElements;
@@ -10,6 +11,7 @@ public class DrinkChecker : MonoBehaviour
 {
     public DrinkClasses drinkObject;
     public DrinkClasses drinkRecipes;
+    public ScoreCounter scoreCounter;
 
     // Start is called before the first frame update
     void Start()
@@ -20,7 +22,7 @@ public class DrinkChecker : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Keyboard.current[Key.Space].IsPressed())
+        if (Keyboard.current[Key.Space].wasPressedThisFrame)
         {
             Debug.Log("Checking if drink name is the same");
             if (drinkObject.drinks[0].drinkName == drinkRecipes.drinks[0].drinkName) 
@@ -43,6 +45,25 @@ public class DrinkChecker : MonoBehaviour
                                     if (recipe.ingredients[j].ingredientName == drink.ingredients[i].ingredientName)
                                     {
                                         Debug.Log("Ingredients are the same");
+                                        if (recipe.ingredients[j].ingredientAmount == drink.ingredients[i].ingredientAmount)
+                                        {
+                                            Debug.Log("Ingredient amounts are the same, 100% right!");
+                                            scoreCounter.countScore(100.0f);
+                                        }
+                                        else if (recipe.ingredients[j].ingredientAmount != drink.ingredients[i].ingredientAmount)
+                                        {
+                                            //Debug.Log("Too little of: " + recipe.ingredients[j].ingredientName);
+                                            float difference = drink.ingredients[i].ingredientAmount / recipe.ingredients[j].ingredientAmount * 100;
+                                            Debug.Log("Drink is: " + difference + "% correct!");
+                                            scoreCounter.countScore(difference);
+
+                                        }
+                                        /*else if (recipe.ingredients[j].ingredientAmount <= drink.ingredients[i].ingredientAmount)
+                                        {
+                                            Debug.Log("Too much of: " + recipe.ingredients[j].ingredientName);
+                                            float difference = math.abs(recipe.ingredients[j].ingredientAmount - drink.ingredients[i].ingredientAmount);
+                                            scoreCounter.countScore(difference);
+                                        }*/
                                     }
                                     else
                                     {
