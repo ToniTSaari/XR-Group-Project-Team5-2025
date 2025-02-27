@@ -52,8 +52,14 @@ public class LiquidGrowth : MonoBehaviour
         material.SetFloat("_Fill", currentFill);
     }
     
-    // Handle fill per particle hit
-    void OnParticleCollision(GameObject other)
+    // Public method for external calls (used by ParticleRaycaster)
+    public void OnParticleRaycastHit()
+    {
+        AddLiquid();
+    }
+    
+    // Centralized method to add liquid
+    private void AddLiquid()
     {
         float tiltAngle = Vector3.Angle(transform.up, Vector3.up);
         float currentSpillThreshold = Mathf.Lerp(emptySpillAngle, baseSpillAngle, currentFill);
@@ -66,17 +72,4 @@ public class LiquidGrowth : MonoBehaviour
             currentFill = Mathf.Min(currentFill, maxFill);
         }
     }
-    
-    // Optional: Visualization of current spill threshold in editor
-    private void OnDrawGizmos()
-    {
-        if (Application.isPlaying)
-        {
-            float threshold = Mathf.Lerp(emptySpillAngle, baseSpillAngle, currentFill);
-            Gizmos.color = Color.yellow;
-            Vector3 tiltDirection = Quaternion.AngleAxis(threshold, Vector3.forward) * Vector3.up;
-            Gizmos.DrawRay(transform.position, tiltDirection);
-        }
-    }
 }
-
