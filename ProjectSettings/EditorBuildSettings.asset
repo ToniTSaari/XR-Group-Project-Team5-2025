@@ -11,6 +11,9 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/VR Bartender.unity
     guid: 2d33a416a476ab94cb9feb8f0f29dfef
+  - enabled: 0
+    path: Assets/Scenes/Milla Test scene.unity
+    guid: 036adaf5135c3524e9eb4e69ffc2817e
   m_configObjects:
     Unity.XR.Oculus.Settings: {fileID: 11400000, guid: ed72be55522c8448bae8b0d66fa21adf,
       type: 2}
