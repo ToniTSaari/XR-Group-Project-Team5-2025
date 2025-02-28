@@ -2,6 +2,8 @@ using UnityEngine;
 
 public class LiquidGrowth : MonoBehaviour
 {
+    public LiquidAdder liquidAdder;
+
     public float growthSpeed = 1f;
     public float maxFill = 1f;
     public float baseSpillAngle = 45f; // Base angle for spilling when container is full
@@ -51,15 +53,15 @@ public class LiquidGrowth : MonoBehaviour
         // Update shader
         material.SetFloat("_Fill", currentFill);
     }
-    
-    // Public method for external calls (used by ParticleRaycaster)
-    public void OnParticleRaycastHit()
+
+    // Public method for external calls (used by ParticleRaycaster), also returns the GameObject that was hit, for further processing
+    public void OnParticleRaycastHit(GameObject glass)
     {
-        AddLiquid();
+        AddLiquid(glass);
     }
     
     // Centralized method to add liquid
-    private void AddLiquid()
+    private void AddLiquid(GameObject glass)
     {
         float tiltAngle = Vector3.Angle(transform.up, Vector3.up);
         float currentSpillThreshold = Mathf.Lerp(emptySpillAngle, baseSpillAngle, currentFill);
@@ -70,6 +72,9 @@ public class LiquidGrowth : MonoBehaviour
             // Increase fill level based on particle collision
             currentFill += fillAmountPerParticle;
             currentFill = Mathf.Min(currentFill, maxFill);
+            // gets the glass size from the hit GameObject and passes it to the liquidAdder to add liquid to the glass in the scoring game logic
+            float glassSize = glass.GetComponent<GlassSize>().glassSize;
+            liquidAdder.GetComponent<LiquidAdder>().pourIngredient("Beer", fillAmountPerParticle * glassSize);
         }
     }
 }
