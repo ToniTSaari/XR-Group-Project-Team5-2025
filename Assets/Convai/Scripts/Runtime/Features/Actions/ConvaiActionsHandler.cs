@@ -911,7 +911,10 @@ namespace Convai.Scripts.Runtime.Features
                 target.transform.localRotation = handTransform.localRotation; // Align rotation with hand
 
                 _currentNPC.GetComponent<Animator>().CrossFade(Animator.StringToHash("Drinking"), 0.05f);
-                yield return new WaitForSeconds(7.167f); // Adjust timing based on animation length
+                //yield return new WaitForSeconds(7.167f); // Adjust timing based on animation length
+                // Wait for the animation to complete
+                yield return new WaitUntil(() => _currentNPC.GetComponent<Animator>().GetCurrentAnimatorStateInfo(0).IsName("Drinking") &&
+                                                 _currentNPC.GetComponent<Animator>().GetCurrentAnimatorStateInfo(0).normalizedTime >= 1f);
 
                 _currentNPC.GetComponent<Animator>().CrossFade(Animator.StringToHash("Idle"), 0.05f);
             }
@@ -923,6 +926,8 @@ namespace Convai.Scripts.Runtime.Features
 
             // Keep object visible
             target.SetActive(true);
+            Destroy(target);
+
         }
 
 
@@ -974,6 +979,10 @@ namespace Convai.Scripts.Runtime.Features
             {
                 Debug.LogError("Right hand not found!");
             }
+
+            // Wait for the grab animation to finish before returning to idle
+            yield return new WaitUntil(() => _currentNPC.GetComponent<Animator>().GetCurrentAnimatorStateInfo(0).IsName("GrabObject") &&
+                                                 _currentNPC.GetComponent<Animator>().GetCurrentAnimatorStateInfo(0).normalizedTime >= 1f);
 
             // Keep object visible
             target.SetActive(true);

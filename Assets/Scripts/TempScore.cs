@@ -9,8 +9,7 @@ public class TempScore : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        TempScore drink = new TempScore();
-        drink.score = Random.Range(1, 10); // Example scoring system
+        score = Random.Range(1, 10); // Assign a random score when spawned
     }
 
     // Update is called once per frame
