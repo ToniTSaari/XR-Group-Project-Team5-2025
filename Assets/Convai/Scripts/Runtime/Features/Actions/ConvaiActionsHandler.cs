@@ -21,7 +21,8 @@ namespace Convai.Scripts.Runtime.Features
         PickUp,
         Drop,
         Drinking,
-        GrabObject
+        GrabObject,
+        NoticeDrink
         /*Sitting,
         Sitting2,
         SittingDown,
@@ -358,6 +359,11 @@ namespace Convai.Scripts.Runtime.Features
                     // Call the GrabObject function
                     Debug.Log("Playing GrabObject animation");
                     yield return GrabObject(action.Target);
+                    break;
+
+                case ActionChoice.NoticeDrink:
+                    Debug.Log("Noticing object!");
+                    yield return NoticeDrink(action.Target);
                     break;
                 /*
                 case ActionChoice.Sitting:
@@ -840,6 +846,22 @@ namespace Convai.Scripts.Runtime.Features
 
         #endregion
         //ChatGPT version
+
+        private IEnumerator NoticeDrink(GameObject target)
+        {
+            if (target == null)
+            {
+                Debug.LogError("No drink found! Exiting NoticeDrink action.");
+                yield break;
+            }
+
+            // Make NPC look at the drink
+            _currentNPC.transform.LookAt(target.transform);
+            Debug.Log("NoticeDrink triggered for target: " + target.name);
+
+            yield return new WaitForSeconds(1); // Small delay to simulate reaction
+        }
+
 
         private IEnumerator Drinking(GameObject target)
         {
