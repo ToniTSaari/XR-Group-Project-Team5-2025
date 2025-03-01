@@ -7,7 +7,7 @@ TagManager:
   - Box
   - Trail
   - SenderTMP
-  - Drink
+  - Liquid
   layers:
   - Default
   - TransparentFX

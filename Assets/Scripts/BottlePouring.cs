@@ -1,8 +1,8 @@
 using UnityEngine;
 
-public class BottlePouring: MonoBehaviour
+public class BottlePouring : MonoBehaviour
 {
-    public Transform bottleMouth;
+    public Transform pourPoint; // Assign PourPoint in Inspector
     public ParticleSystem liquidParticles;
     public float pourThresholdAngle = 45f;
     public float pourForceMultiplier = 5f;
@@ -11,17 +11,23 @@ public class BottlePouring: MonoBehaviour
     public AudioSource pouringStartSound;
     public AudioSource pouringStopSound;
 
-    public float maxEmissionRate = 200f; // Maximum particles per second
-    public float minEmissionRate = 50f;  // Minimum particles per second
+    public float maxEmissionRate = 200f;
+    public float minEmissionRate = 50f;
 
-    public AnimationCurve emissionCurve; // Add this for the AnimationCurve
+    public AnimationCurve emissionCurve;
+
+    public float raycastDistance = 10f;
+    public LayerMask glassLayer;
+    public bool showRayInSceneView = true; // Keep this for debugging
+
 
     private bool isPouring = false;
     private ParticleSystem.EmissionModule emissionModule;
 
+
     private void Start()
     {
-        if (liquidParticles!= null)
+        if (liquidParticles != null)
         {
             liquidParticles.Stop();
             emissionModule = liquidParticles.emission;
@@ -31,29 +37,50 @@ public class BottlePouring: MonoBehaviour
 
     private void Update()
     {
-        // Use dot product instead of Vector3.Angle
+        if (pourPoint == null)
+        {
+            Debug.LogError("Pour point not assigned! Assign PourPoint in the Inspector.");
+            return;
+        }
+
         float dotProduct = Vector3.Dot(transform.up, Vector3.up);
-        float pourAngle = Mathf.Acos(dotProduct) * Mathf.Rad2Deg; // Convert to degrees
+        float pourAngle = Mathf.Acos(dotProduct) * Mathf.Rad2Deg;
 
-        // Calculate a normalized tilt value between 0 and 1
         float normalizedTilt = Mathf.InverseLerp(pourThresholdAngle, 90f, pourAngle);
-
-        // Use the AnimationCurve to get the curved tilt
         float curvedTilt = emissionCurve.Evaluate(normalizedTilt);
-
-        // Calculate emission rate based on the curved tilt
         float emissionRate = Mathf.Lerp(minEmissionRate, maxEmissionRate, curvedTilt);
 
-        // Use dot product for threshold comparison
-        if (dotProduct < Mathf.Cos(pourThresholdAngle * Mathf.Deg2Rad)) // Convert threshold to radians
+        if (dotProduct < Mathf.Cos(pourThresholdAngle * Mathf.Deg2Rad))
         {
             StartPouring(emissionRate);
+
+            // Raycast handling (when pouring)
+            RaycastHit hit;
+            if (Physics.Raycast(pourPoint.position, Vector3.down, out hit, raycastDistance, glassLayer))
+            {
+                if (showRayInSceneView)
+                {
+                    Debug.DrawLine(pourPoint.position, hit.point, Color.red);
+                }
+            }
+            else
+            {
+                if (showRayInSceneView)
+                {
+                    Debug.DrawLine(pourPoint.position, pourPoint.position + Vector3.down * raycastDistance, Color.green);
+                }
+            }
         }
         else
         {
             StopPouring();
+            if (showRayInSceneView)
+            {
+                Debug.DrawLine(pourPoint.position, pourPoint.position + Vector3.down * 0.5f, Color.gray);
+            }
         }
     }
+
 
     private void StartPouring(float emissionRate)
     {
@@ -61,10 +88,15 @@ public class BottlePouring: MonoBehaviour
         {
             isPouring = true;
 
-            if (liquidParticles!= null &&!liquidParticles.isPlaying)
+            // Start particle emission
+            if (liquidParticles != null)
             {
-                liquidParticles.Play();
-                pouringStartSound?.Play();
+                if (!liquidParticles.isPlaying)
+                {
+                    liquidParticles.Play();
+                }
+
+                pouringStartSound?.Play();  // Play start sound if assigned
             }
         }
 
@@ -78,7 +110,7 @@ public class BottlePouring: MonoBehaviour
         forceOverLifetime.enabled = true;
         forceOverLifetime.y = new ParticleSystem.MinMaxCurve(-pourForceMultiplier);
 
-        liquidParticles.transform.position = bottleMouth.position;
+        liquidParticles.transform.position = pourPoint.position;
     }
 
     private void StopPouring()
@@ -87,19 +119,14 @@ public class BottlePouring: MonoBehaviour
         {
             isPouring = false;
 
-            if (liquidParticles!= null)
+            if (liquidParticles != null)
             {
                 if (liquidParticles.isPlaying)
                 {
-                    liquidParticles.Stop();
+                    liquidParticles.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
                     pouringStartSound?.Stop();
                     pouringStopSound?.Play();
                 }
-
-                emissionModule.enabled = false;
-                liquidParticles.Clear();
-                liquidParticles.Play();
-                liquidParticles.Stop();
             }
         }
     }

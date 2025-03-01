@@ -8,7 +8,7 @@ public class LiquidAdder : MonoBehaviour
     public DrinkClasses drinkObject;
     public string drinkOrder;
     public string ingredientUnit = "cl";
-    void pourIngredient(string ingredientName, float ingredientAmount)
+    public void pourIngredient(string ingredientName, float ingredientAmount)
     {
         Debug.Log("Pouring " + ingredientAmount + ingredientUnit + " of " + ingredientName);
 
