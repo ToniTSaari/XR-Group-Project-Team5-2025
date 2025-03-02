@@ -11,8 +11,25 @@ public class ScoreCounter : MonoBehaviour
 
     public void countScore(float drinkScore) 
     {
-        correctnessPercentage += drinkScore;
-        drinkStars = (int)math.round(correctnessPercentage / 20);
-        Debug.Log("Score is now: " + correctnessPercentage);
+        if(drinkScore < 0)
+        {
+            correctnessPercentage = 0;
+            drinkStars = 0;
+        }
+        else if (drinkScore > 100)
+        {
+            correctnessPercentage = 100;
+        }
+        else if (drinkScore != 0) 
+        {
+            correctnessPercentage = drinkScore;
+            drinkStars = (int)math.round(correctnessPercentage / 20);
+            Debug.Log("Score is now: " + correctnessPercentage);
+        }
+        else 
+        {
+            correctnessPercentage = 0;
+            drinkStars = 0;
+        }
     }
 }

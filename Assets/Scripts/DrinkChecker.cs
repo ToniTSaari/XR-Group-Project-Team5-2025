@@ -39,7 +39,7 @@ public class DrinkChecker : MonoBehaviour
                                     if (recipe.ingredients[j].ingredientAmount == drink.ingredients[i].ingredientAmount)
                                     {
                                         Debug.Log("Ingredient amounts are the same, 100% right!");
-                                        scoreCounter.countScore(100.0f);
+                                        scoreCounter.countScore(100);
                                     }
                                     else if (recipe.ingredients[j].ingredientAmount != drink.ingredients[i].ingredientAmount)
                                     {
@@ -47,7 +47,6 @@ public class DrinkChecker : MonoBehaviour
                                         float difference = drink.ingredients[i].ingredientAmount / recipe.ingredients[j].ingredientAmount * 100;
                                         Debug.Log("Drink is: " + difference + "% correct!");
                                         scoreCounter.countScore(difference);
-
                                     }
                                 }
                                 else

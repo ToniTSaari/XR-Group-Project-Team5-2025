@@ -32,13 +32,17 @@ public class DrinkUI : MonoBehaviour
                         drinkText += $"{drink.ingredients[i].ingredientName} - {drink.ingredients[i].ingredientAmount} cl\n";
                     }
                 }
-                drinkUI.text = drinkText;
+                drinkUI.text = drinkText + "\n";
             }
         }
         else 
         {
             drinkUI.text = "No drink object found";
         }
+        drinkChecker.CheckDrink(drinkObject);
+        float drinkScore = scoreCounter.correctnessPercentage;
+        drinkUI.text += "Drink correctness: " + drinkScore + "%\n";
+        drinkUI.text += "Drink stars: " + scoreCounter.drinkStars + "\n";
     }
     private void Start()
     {
