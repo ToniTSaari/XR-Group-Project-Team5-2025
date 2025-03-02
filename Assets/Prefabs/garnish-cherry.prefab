@@ -9,6 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4066241380226195987}
+  - component: {fileID: 8849155771853878391}
   m_Layer: 0
   m_Name: garnish-cherry
   m_TagString: Untagged
@@ -32,6 +33,20 @@ Transform:
   - {fileID: 4310710858621505950}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &8849155771853878391
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1579425472887038105}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4539c924118bf7842ba8b2ce41c61087, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  timeToDestroy: 15
+  garnishType: 2
 --- !u!1001 &4348227444620179061
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -100,6 +115,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: garnish-cherry
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: c46d2bfe14bcd864cb551ee2157f3b79,
+        type: 3}
+      propertyPath: m_Layer
+      value: 9
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -108,6 +128,10 @@ PrefabInstance:
         type: 3}
       insertIndex: -1
       addedObject: {fileID: 7871525142928031135}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: c46d2bfe14bcd864cb551ee2157f3b79,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 164994147347588415}
   m_SourcePrefab: {fileID: 100100000, guid: c46d2bfe14bcd864cb551ee2157f3b79, type: 3}
 --- !u!1 &3501944548613786404 stripped
 GameObject:
@@ -136,6 +160,33 @@ SphereCollider:
   serializedVersion: 3
   m_Radius: 0.009935323
   m_Center: {x: -0.0000000013969839, y: -0.0013021245, z: -0.0000000013969839}
+--- !u!54 &164994147347588415
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3501944548613786404}
+  serializedVersion: 4
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 1
+  m_IsKinematic: 1
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
 --- !u!4 &4310710858621505950 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: c46d2bfe14bcd864cb551ee2157f3b79,

@@ -1,6 +1,6 @@
-**Available Drinks:**
+Drink Choices to order:
 - Champagne
-- Whiskey
+- Whiskey 
 - Wine
 - Cola
 - Soda
