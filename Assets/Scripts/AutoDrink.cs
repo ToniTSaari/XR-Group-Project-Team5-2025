@@ -32,6 +32,8 @@ public class AutoDrink : MonoBehaviour
 
         yield return new WaitForSeconds(0.5f); // Small delay for realism
 
+
+        //Temporary random score for the drink
         TempScore drink = drinkObj.GetComponent<TempScore>(); // Get drink score component
         if (drink == null)
         {
@@ -39,8 +41,17 @@ public class AutoDrink : MonoBehaviour
             yield break;
         }
 
-        int score = drink.score; // Get drink score (1-10)
-        string npcPrompt = $"Please drink the {drinkObj.name} and rate it. The drink quality is {score}/10.";
+        //Proper score for the drink after proper implementation
+        ScoreCounter drinkScore = drinkObj.GetComponent<ScoreCounter>(); // Get score counter component
+        if (drinkScore == null)
+        {
+            Debug.LogError("No ScoreCounter component found on the drink!");
+            yield break;
+        }
+
+        int score = drink.score; // Get drink score (1-10) or (0-100)
+        string npcPrompt = $"I'm the bartender asking you to please grab and drink the {drinkObj.name} and rate it. The drink quality is {score}/10."; //TempScore version
+        //string npcPrompt = $"Please grab and drink the {drinkObj.name} and rate it. The drink quality is {drinkScore}/100."; //ScoreCounter version
 
         // Log the prompt being sent
         Debug.Log($"Prompt for NPC: {npcPrompt}");
@@ -60,21 +71,25 @@ public class AutoDrink : MonoBehaviour
 
         yield return new WaitForSeconds(1); // Wait for NPC to process the request
 
-        // Rotate NPC to face the drink before grabbing it
-        //Vector3 directionToDrink = (drinkObj.transform.position - _npc.transform.position).normalized;
-        //_npc.transform.rotation = Quaternion.LookRotation(directionToDrink);
+
+
 
         // Make NPC play animations
+        Debug.Log("Attempting to trigger GrabObject animation.");
         _npc.TriggerEvent("GrabObject"); // NPC grabs the drink
         yield return new WaitUntil(() => IsAnimationFinished("GrabObject"));
+        Debug.Log("GrabObject animation finished.");
 
 
         _npc.TriggerEvent("Drinking"); // NPC starts drinking animation
         yield return new WaitUntil(() => IsAnimationFinished("Drinking"));
+        Debug.Log("Drinking animation finished.");
 
         //Don't add WaitForSeconds here, as it screws up the animation
 
         Destroy(drinkObj); // Remove the drink after it's "consumed"
+        Debug.Log("Drink object destroyed.");
+
         hasInteractedWithDrink = false; // Reset for new drinks
         isPromptSent = false;
 
@@ -97,6 +112,9 @@ public class AutoDrink : MonoBehaviour
         // Check if the current animation is the specified one and if it has finished
         Animator animator = _npc.GetComponent<Animator>();
         AnimatorStateInfo stateInfo = animator.GetCurrentAnimatorStateInfo(0);
-        return stateInfo.IsName(animationName) && stateInfo.normalizedTime >= 1f;
+        bool isFinished = stateInfo.IsName(animationName) && stateInfo.normalizedTime >= 0.99f;
+
+        //Debug.Log($"Checking animation: {animationName} - Finished: {isFinished}, normalizedTime: {stateInfo.normalizedTime}");
+        return isFinished;
     }
 }

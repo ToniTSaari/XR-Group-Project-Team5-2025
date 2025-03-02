@@ -297,20 +297,22 @@ namespace Convai.Scripts.Runtime.Features
         private IEnumerator PlayActionList()
         {
             while (true)
-                // Check if there are actions in the action list
+            {
                 if (_actionList.Count > 0)
                 {
-                    // Call the DoAction function for the first action in the list and wait until it's done
                     yield return DoAction(_actionList[0]);
 
-                    // Remove the completed action from the list
-                    _actionList.RemoveAt(0);
+                    // Ensure the list is still valid before removing
+                    if (_actionList.Count > 0)
+                    {
+                        _actionList.RemoveAt(0);
+                    }
                 }
                 else
                 {
-                    // If there are no actions in the list, yield to wait for the next frame
                     yield return null;
                 }
+            }
         }
 
         private IEnumerator DoAction(ConvaiAction action)
@@ -907,16 +909,20 @@ namespace Convai.Scripts.Runtime.Features
 
                 // Parent the object to the NPC's hand
                 target.transform.SetParent(handTransform);
-                target.transform.localPosition = Vector3.zero; // Adjust position if necessary
-                target.transform.localRotation = handTransform.localRotation; // Align rotation with hand
+                target.transform.localPosition = new Vector3(0.12f, 0.02f, 0.02f); // Adjust position if necessary
+                target.transform.localRotation = handTransform.localRotation * Quaternion.Euler(0, 0, 90); // Align rotation with hand
 
                 _currentNPC.GetComponent<Animator>().CrossFade(Animator.StringToHash("Drinking"), 0.05f);
                 //yield return new WaitForSeconds(7.167f); // Adjust timing based on animation length
                 // Wait for the animation to complete
-                yield return new WaitUntil(() => _currentNPC.GetComponent<Animator>().GetCurrentAnimatorStateInfo(0).IsName("Drinking") &&
-                                                 _currentNPC.GetComponent<Animator>().GetCurrentAnimatorStateInfo(0).normalizedTime >= 1f);
-
+                // Wait until the GrabObject animation is fully finished and NOT transitioning
+                yield return new WaitUntil(() =>
+                {
+                    AnimatorStateInfo state = _currentNPC.GetComponent<Animator>().GetCurrentAnimatorStateInfo(0);
+                    return state.IsName("Drinking") && state.normalizedTime >= 0.99f && !state.loop;
+                });
                 _currentNPC.GetComponent<Animator>().CrossFade(Animator.StringToHash("Idle"), 0.05f);
+
             }
             else
             {
@@ -972,36 +978,26 @@ namespace Convai.Scripts.Runtime.Features
             if (handTransform != null)
             {
                 target.transform.SetParent(handTransform);
-                target.transform.localPosition = Vector3.zero; // Adjust if necessary
-                target.transform.localRotation = handTransform.localRotation;
+                target.transform.localPosition = new Vector3(0.12f, 0.02f, 0.02f); // Adjust if necessary
+                target.transform.localRotation = handTransform.localRotation * Quaternion.Euler(0, 0, 90);
             }
             else
             {
                 Debug.LogError("Right hand not found!");
             }
 
-            // Wait for the grab animation to finish before returning to idle
-            yield return new WaitUntil(() => _currentNPC.GetComponent<Animator>().GetCurrentAnimatorStateInfo(0).IsName("GrabObject") &&
-                                                 _currentNPC.GetComponent<Animator>().GetCurrentAnimatorStateInfo(0).normalizedTime >= 1f);
+            // Wait until the GrabObject animation is fully finished and NOT transitioning
+            yield return new WaitUntil(() =>
+            {
+                AnimatorStateInfo state = _currentNPC.GetComponent<Animator>().GetCurrentAnimatorStateInfo(0);
+                return state.IsName("GrabObject") && state.normalizedTime >= 0.99f && !state.loop;
+            });
 
             // Keep object visible
             target.SetActive(true);
 
             // Return to idle after grabbing
             _currentNPC.GetComponent<Animator>().CrossFade(Animator.StringToHash("Idle"), 0.05f);
-
-
-            /* 
-            // When the object is released or no longer needed, reset physics
-            // Example of releasing (can be triggered later when the object is released)
-            yield return new WaitForSeconds(3f); // Adjust the delay or trigger based on your game logic
-
-            if (targetRigidbody != null)
-            {
-            // Re-enable gravity and restore physics after the grab is done
-                targetRigidbody.useGravity = true;
-                targetRigidbody.isKinematic = false;
-            }*/
         }
 
 
