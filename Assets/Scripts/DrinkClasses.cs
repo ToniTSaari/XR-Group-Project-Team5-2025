@@ -10,6 +10,8 @@ public class DrinkClasses : MonoBehaviour
         public string ingredientName;
         public float ingredientAmount;
         public bool milliliters;
+        public bool hasGarnish;
+        public string garnishName;
     }
     [System.Serializable]
     public class DrinkObject

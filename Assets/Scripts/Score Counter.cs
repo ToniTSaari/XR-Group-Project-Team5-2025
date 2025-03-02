@@ -23,13 +23,25 @@ public class ScoreCounter : MonoBehaviour
         else if (drinkScore != 0) 
         {
             correctnessPercentage = drinkScore;
-            drinkStars = (int)math.round(correctnessPercentage / 20);
+            drinkStars = (int)math.round(correctnessPercentage / 25);
             Debug.Log("Score is now: " + correctnessPercentage);
         }
         else 
         {
             correctnessPercentage = 0;
             drinkStars = 0;
+        }
+    }
+    public void resetScore()
+    {
+        correctnessPercentage = 0;
+        drinkStars = 0;
+    }
+    public void garnishScore(bool garnish) 
+    {
+        if(garnish)
+        {
+            drinkStars += 1;
         }
     }
 }
