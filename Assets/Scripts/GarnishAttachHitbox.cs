@@ -2,45 +2,42 @@
 using UnityEngine;
 using UnityEngine.XR.Interaction.Toolkit;
 
-[RequireComponent(typeof(Collider))] // Ensure a Collider is present
+[RequireComponent(typeof(Collider))]
 public class GarnishAttachHitbox : MonoBehaviour
 {
-    private Glass _glass; // Reference to the parent Glass script
+    private Glass _glass; // Reference to the Glass script
     private XRGrabInteractable _heldGarnishInteractable = null;
 
     private void Start()
     {
-        // Get the Glass script from the *parent* object.
+        // IMPORTANT CHANGE: Find the Glass component on the *parent*.
         _glass = GetComponentInParent<Glass>();
         if (_glass == null)
         {
             Debug.LogError("GarnishAttachHitbox: Could not find Glass script in parent!");
-            enabled = false; // Disable this script if no Glass is found
+            enabled = false;
             return;
         }
-      //Ensure that this is a trigger
-        Collider col = GetComponent<Collider>();
-        col.isTrigger = true;
-        if(GetComponent<Rigidbody>() != null){
-            Debug.LogError("GarnishAttachHitbox should not have a rigidbody attached");
-        }
+          //Ensure that this is a trigger
+            Collider col = GetComponent<Collider>();
+            col.isTrigger = true;
+            if(GetComponent<Rigidbody>() != null){
+                Debug.LogError("GarnishAttachHitbox should not have a rigidbody attached");
+            }
     }
-
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.CompareTag("Garnish"))
+        if (other.gameObject.CompareTag("Garnish"))  // Check for Garnish tag
         {
-            // Check if we are currently holding this garnish.
-             XRGrabInteractable grabInteractable = other.GetComponent<XRGrabInteractable>();
-              if (grabInteractable != null && grabInteractable.isSelected)
-              {
+            XRGrabInteractable grabInteractable = other.GetComponent<XRGrabInteractable>();
+            if (grabInteractable != null && grabInteractable.isSelected)
+            {
                 _heldGarnishInteractable = grabInteractable;
-                grabInteractable.selectExited.AddListener(OnGarnishReleased); //Listen for release
-              }
+                _heldGarnishInteractable.selectExited.AddListener(OnGarnishReleased);
+            }
         }
     }
-
     private void OnTriggerExit(Collider other)
     {
       if (other.gameObject.CompareTag("Garnish"))
@@ -58,20 +55,19 @@ public class GarnishAttachHitbox : MonoBehaviour
             }
         }
     }
+
     private void OnGarnishReleased(SelectExitEventArgs args)
     {
-        if (_heldGarnishInteractable != null) // Check if we were tracking a garnish
+        if (_heldGarnishInteractable != null)
         {
-            // Get the Garnish component.  More robust to get it *now*.
             Garnish garnish = _heldGarnishInteractable.GetComponent<Garnish>();
             if (garnish != null)
             {
                 _glass.AddGarnish(garnish); // Add it to the glass!
             }
-             _heldGarnishInteractable = null; //Clear the reference
+            _heldGarnishInteractable = null;
         }
     }
-
 
     private void OnDestroy()
     {
