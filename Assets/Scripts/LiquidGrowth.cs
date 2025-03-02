@@ -55,13 +55,13 @@ public class LiquidGrowth : MonoBehaviour
     }
 
     // Public method for external calls (used by ParticleRaycaster), also returns the GameObject that was hit, for further processing
-    public void OnParticleRaycastHit(GameObject glass)
+    public void OnParticleRaycastHit(GameObject glass, string ingredientName)
     {
-        AddLiquid(glass);
+        AddLiquid(glass, ingredientName);
     }
     
     // Centralized method to add liquid
-    private void AddLiquid(GameObject glass)
+    private void AddLiquid(GameObject glass, string ingredientName)
     {
         float tiltAngle = Vector3.Angle(transform.up, Vector3.up);
         float currentSpillThreshold = Mathf.Lerp(emptySpillAngle, baseSpillAngle, currentFill);
@@ -74,7 +74,7 @@ public class LiquidGrowth : MonoBehaviour
             currentFill = Mathf.Min(currentFill, maxFill);
             // gets the glass size from the hit GameObject and passes it to the liquidAdder to add liquid to the glass in the scoring game logic
             float glassSize = glass.GetComponent<GlassSize>().glassSize;
-            liquidAdder.GetComponent<LiquidAdder>().pourIngredient("Beer", fillAmountPerParticle * glassSize);
+            liquidAdder.GetComponent<LiquidAdder>().pourIngredient(ingredientName, fillAmountPerParticle * glassSize);
         }
     }
 }

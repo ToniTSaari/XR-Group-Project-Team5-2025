@@ -2,6 +2,8 @@ using UnityEngine;
 
 public class BottlePouring : MonoBehaviour
 {
+    public string ingredientName;
+
     public Transform pourPoint; // Assign PourPoint in Inspector
     public ParticleSystem liquidParticles;
     public float pourThresholdAngle = 45f;
@@ -61,6 +63,12 @@ public class BottlePouring : MonoBehaviour
                 if (showRayInSceneView)
                 {
                     Debug.DrawLine(pourPoint.position, hit.point, Color.red);
+                }
+                // sends incredient to LiquidGrowth.cs
+                LiquidGrowth liquidGrowth = hit.collider.GetComponent<LiquidGrowth>();
+                if (liquidGrowth != null)
+                {
+                    liquidGrowth.OnParticleRaycastHit(hit.collider.gameObject, ingredientName);
                 }
             }
             else
