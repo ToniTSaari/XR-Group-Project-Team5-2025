@@ -3,6 +3,7 @@ using UnityEngine;
 public class BottlePouring : MonoBehaviour
 {
     public string ingredientName;
+    public Color liquidColor = Color.white; // Add this to set the color in Inspector
 
     public Transform pourPoint; // Assign PourPoint in Inspector
     public ParticleSystem liquidParticles;
@@ -64,11 +65,15 @@ public class BottlePouring : MonoBehaviour
                 {
                     Debug.DrawLine(pourPoint.position, hit.point, Color.red);
                 }
-                // sends incredient to LiquidGrowth.cs
+                // Send ingredient name AND color to LiquidGrowth.cs
                 LiquidGrowth liquidGrowth = hit.collider.GetComponent<LiquidGrowth>();
                 if (liquidGrowth != null)
                 {
-                    liquidGrowth.OnParticleRaycastHit(hit.collider.gameObject, ingredientName);
+                    // First, initialize the color as soon as pouring starts
+                    liquidGrowth.InitializeLiquidColor(liquidColor);
+                    
+                    // Then handle the actual liquid addition with particle hit
+                    liquidGrowth.OnParticleRaycastHit(hit.collider.gameObject, ingredientName, liquidColor);
                 }
             }
             else
@@ -103,6 +108,10 @@ public class BottlePouring : MonoBehaviour
                 {
                     liquidParticles.Play();
                 }
+
+                // Set particle color to match liquid color
+                var mainModule = liquidParticles.main;
+                mainModule.startColor = liquidColor;
 
                 pouringStartSound?.Play();  // Play start sound if assigned
             }
