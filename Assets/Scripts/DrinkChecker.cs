@@ -31,7 +31,7 @@ public class DrinkChecker : MonoBehaviour
                         for (int i = 0; i < drinkIngredientCount; i++)
                         {
                             int recipeIngredientCount = recipe.ingredients.Count;
-                            for (int j = 0; j < drinkIngredientCount; j++)
+                            for (int j = 0; j < recipeIngredientCount; j++)
                             {
                                 if (recipe.ingredients[j].ingredientName == drink.ingredients[i].ingredientName)
                                 {
@@ -43,10 +43,43 @@ public class DrinkChecker : MonoBehaviour
                                     }
                                     else if (recipe.ingredients[j].ingredientAmount != drink.ingredients[i].ingredientAmount)
                                     {
+                                        float difference = 0;
                                         //Debug.Log("Too little of: " + recipe.ingredients[j].ingredientName);
-                                        float difference = drink.ingredients[i].ingredientAmount / recipe.ingredients[j].ingredientAmount * 100;
+                                        if (drink.ingredients[i].ingredientAmount < recipe.ingredients[j].ingredientAmount)
+                                        {
+                                            difference = Mathf.Clamp((drink.ingredients[i].ingredientAmount / recipe.ingredients[j].ingredientAmount) * 100, 0, 100);
+                                        }
                                         Debug.Log("Drink is: " + difference + "% correct!");
                                         scoreCounter.countScore(difference);
+                                        if(recipe.ingredients[j].hasGarnish)
+                                        {
+                                            if (drink.ingredients[i].hasGarnish)
+                                            {
+                                                if (recipe.ingredients[j].garnishName == drink.ingredients[i].garnishName)
+                                                {
+                                                    Debug.Log("Garnish is correct");
+                                                    scoreCounter.garnishScore(true);
+                                                }
+                                                else
+                                                {
+                                                    Debug.Log("Garnish is not correct");
+                                                    scoreCounter.garnishScore(false);
+                                                }
+                                            }
+                                            else
+                                            {
+                                                Debug.Log("Garnish is missing");
+                                                scoreCounter.garnishScore(false);
+                                            }
+                                        }
+                                        else
+                                        {
+                                            if (drink.ingredients[i].hasGarnish)
+                                            {
+                                                Debug.Log("Garnish is not needed");
+                                                scoreCounter.garnishScore(false);
+                                            }
+                                        }
                                     }
                                 }
                                 else
