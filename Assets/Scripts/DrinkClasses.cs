@@ -16,6 +16,11 @@ public class DrinkClasses : MonoBehaviour
     {
         public string drinkName;
         public List<DrinkIngredients> ingredients = new List<DrinkIngredients>();
+        public DrinkObject()
+        {
+            ingredients = new List<DrinkIngredients>();
+        }
     }
     public List<DrinkObject> drinks = new List<DrinkObject>();
+    public List<DrinkObject> recipes = new List<DrinkObject>();
 }

@@ -5,20 +5,19 @@ using UnityEngine;
 
 public class RecipeUI : MonoBehaviour
 {
-    public DrinkClasses drinkRecipes;
+    public DrinkClasses drinkRecipe;
     public TextMeshProUGUI recipeText;
     public DrinkRandomiser drinkRandomiser;
+
     public void displayRecipe()
     {
-        drinkRecipes.drinks.Clear();
-        drinkRecipes.drinks.Add(drinkRandomiser.drink);
-        string drinkRecipe = drinkRecipes.drinks[0].drinkName + "\n";
-        drinkRecipe += "Ingredients:\n";
-        for (int i = 0; i < drinkRecipes.drinks[0].ingredients.Count; i++)
+        string currentRecipe = this.drinkRecipe.drinks[0].drinkName + "\n\n";
+        currentRecipe += "Ingredients:\n";
+        for (int i = 0; i < this.drinkRecipe.drinks[0].ingredients.Count; i++)
         {
-            drinkRecipe += $"{drinkRecipes.drinks[0].ingredients[i].ingredientName} - {drinkRecipes.drinks[0].ingredients[i].ingredientAmount} cl\n";
+            currentRecipe += $"{this.drinkRecipe.drinks[0].ingredients[i].ingredientName} - {this.drinkRecipe.drinks[0].ingredients[i].ingredientAmount} cl\n";
         }
-        recipeText.text = drinkRecipe;
+        recipeText.text = currentRecipe;
     }
     // Start is called before the first frame update
     void Start()
