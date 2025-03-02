@@ -8,7 +8,7 @@ public class AutoDrink : MonoBehaviour
     public ConvaiNPC _npc; // Assign your NPC in the Inspector
     private bool hasInteractedWithDrink = false; // Prevents multiple activations
     private bool isPromptSent = false; // Prevents multiple sends of the same prompt
-
+    public DrinkChecker drinkChecker;
 
     private void OnTriggerEnter(Collider other)
     {
@@ -32,26 +32,29 @@ public class AutoDrink : MonoBehaviour
 
         yield return new WaitForSeconds(0.5f); // Small delay for realism
 
-
         //Temporary random score for the drink
-        TempScore drink = drinkObj.GetComponent<TempScore>(); // Get drink score component
+        /*TempScore drink = drinkObj.GetComponent<TempScore>(); // Get drink score component
         if (drink == null)
         {
             Debug.LogError("No TempScore component found on the drink!");
             yield break;
-        }
+        }*/
 
         //Proper score for the drink after proper implementation
-        ScoreCounter drinkScore = drinkObj.GetComponent<ScoreCounter>(); // Get score counter component
-        if (drinkScore == null)
+        ScoreCounter drinkStars = drinkObj.GetComponent<ScoreCounter>(); // OLD - Get score counter component
+
+        //DrinkClasses drinkStars = drinkObj.GetComponent<DrinkClasses>(); // Get the Drink component from the object
+        if (drinkStars == null)
         {
             Debug.LogError("No ScoreCounter component found on the drink!");
             yield break;
         }
+        //drinkChecker.CheckDrink(drink); // Check the drink against the recipe
+        int score = drinkChecker.scoreCounter.drinkStars; // Get the score from the ScoreCounter
 
-        int score = drink.score; // Get drink score (1-10) or (0-100)
-        string npcPrompt = $"I'm the bartender asking you to please grab and drink the {drinkObj.name} and rate it. The drink quality is {score}/10."; //TempScore version
-        //string npcPrompt = $"Please grab and drink the {drinkObj.name} and rate it. The drink quality is {drinkScore}/100."; //ScoreCounter version
+        //int score = drink.score; // Get drink score (0-5)
+        //string npcPrompt = $"I'm the bartender asking you to please grab and drink the {drinkObj.name} and rate it. The drink quality is {score}/10."; //TempScore version
+        string npcPrompt = $"Please grab and drink the {drinkObj.name} and rate it. The drink quality is {score}/5."; //ScoreCounter version
 
         // Log the prompt being sent
         Debug.Log($"Prompt for NPC: {npcPrompt}");
@@ -62,6 +65,7 @@ public class AutoDrink : MonoBehaviour
             Debug.LogWarning("The NPC prompt is empty. Not sending to Convai.");
             yield break;
         }
+
         // Mark that the prompt has been sent
         isPromptSent = true;
 
@@ -71,15 +75,11 @@ public class AutoDrink : MonoBehaviour
 
         yield return new WaitForSeconds(1); // Wait for NPC to process the request
 
-
-
-
         // Make NPC play animations
         Debug.Log("Attempting to trigger GrabObject animation.");
         _npc.TriggerEvent("GrabObject"); // NPC grabs the drink
         yield return new WaitUntil(() => IsAnimationFinished("GrabObject"));
         Debug.Log("GrabObject animation finished.");
-
 
         _npc.TriggerEvent("Drinking"); // NPC starts drinking animation
         yield return new WaitUntil(() => IsAnimationFinished("Drinking"));
@@ -107,6 +107,7 @@ public class AutoDrink : MonoBehaviour
             _npc.transform.rotation = Quaternion.Slerp(_npc.transform.rotation, rotation, 0.1f);
         }
     }
+
     private bool IsAnimationFinished(string animationName)
     {
         // Check if the current animation is the specified one and if it has finished

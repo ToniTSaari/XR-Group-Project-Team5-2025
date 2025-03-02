@@ -16,7 +16,7 @@ public class DrinkUI : MonoBehaviour
     {
         if(drinkObject != null && drinkObject.drinks.Count != 0 && drinkObject.drinks != null) 
         {
-            DrinkClasses.DrinkObject drink = drinkObject.drinks[0];
+            DrinkClasses.DrinkObject drink = drinkObject.drinks[drinkRandomiser.drinkIndex];
             if (drink.ingredients.Count == 0)
             {
                 drinkUI.text = "Empty glass of " + drink.drinkName;

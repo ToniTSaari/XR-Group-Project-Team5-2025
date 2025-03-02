@@ -4854,12 +4854,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5147317844469136175}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: 0.7071068, z: -0, w: -0.7071068}
-  m_LocalPosition: {x: 0, y: 0.08, z: 0}
+  m_LocalRotation: {x: -0.00000002669254, y: 0.7071068, z: 0.00000002669254, w: -0.7071068}
+  m_LocalPosition: {x: 0, y: 0.07999998, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 581386226621588887}
+  m_Father: {fileID: 8515553132161787020}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &7458516548764818173
 GameObject:
@@ -4885,13 +4885,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7458516548764818173}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: 1, z: -0, w: 0.000000059604645}
-  m_LocalPosition: {x: 0, y: 0.162, z: 0}
+  m_LocalRotation: {x: 4.500025e-15, y: 1, z: 0.00000003774895, w: 0.000000119209275}
+  m_LocalPosition: {x: 0, y: 0.16199994, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 6350365489593082228}
-  m_Father: {fileID: 581386226621588887}
+  m_Father: {fileID: 8515553132161787020}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &8376031835681202138
 GameObject:
@@ -4923,8 +4923,6 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 8515553132161787020}
-  - {fileID: 1232434097996867033}
-  - {fileID: 6897707136030439595}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &8189772874149167975
@@ -4997,7 +4995,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
-    m_AddedGameObjects: []
+    m_AddedGameObjects:
+    - targetCorrespondingSourceObject: {fileID: -8679921383154817045, guid: 16544c326810a344389e7176ad9497d8,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1232434097996867033}
+    - targetCorrespondingSourceObject: {fileID: -8679921383154817045, guid: 16544c326810a344389e7176ad9497d8,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 6897707136030439595}
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 16544c326810a344389e7176ad9497d8,
         type: 3}
@@ -5089,6 +5095,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3b7a173849993d94facd0e37fe442aa2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  ingredientName: 
+  liquidColor: {r: 1, g: 1, b: 1, a: 1}
   pourPoint: {fileID: 1232434097996867033}
   liquidParticles: {fileID: 3435722928761004674}
   pourThresholdAngle: 45
