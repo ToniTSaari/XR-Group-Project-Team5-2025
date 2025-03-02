@@ -7,6 +7,7 @@ public class DrinkUI : MonoBehaviour
 {
     public DrinkChecker drinkChecker;
     public DrinkClasses drinkObject;
+    public DrinkClasses drinkRecipes;
     public ScoreCounter scoreCounter;
     public DrinkRandomiser drinkRandomiser;
     public TextMeshProUGUI drinkUI;
@@ -41,6 +42,7 @@ public class DrinkUI : MonoBehaviour
     }
     private void Start()
     {
+        drinkObject.drinks[0].drinkName += drinkRecipes.drinks[drinkRandomiser.drinkIndex].drinkName;
         displayDrink();
     }
 

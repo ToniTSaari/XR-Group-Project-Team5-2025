@@ -22,5 +22,4 @@ public class DrinkClasses : MonoBehaviour
         }
     }
     public List<DrinkObject> drinks = new List<DrinkObject>();
-    public List<DrinkObject> recipes = new List<DrinkObject>();
 }

@@ -11,11 +11,11 @@ public class RecipeUI : MonoBehaviour
 
     public void displayRecipe()
     {
-        string currentRecipe = this.drinkRecipe.drinks[0].drinkName + "\n\n";
+        string currentRecipe = drinkRecipe.drinks[drinkRandomiser.drinkIndex].drinkName + "\n\n";
         currentRecipe += "Ingredients:\n";
-        for (int i = 0; i < this.drinkRecipe.drinks[0].ingredients.Count; i++)
+        for (int i = 0; i < drinkRecipe.drinks[drinkRandomiser.drinkIndex].ingredients.Count; i++)
         {
-            currentRecipe += $"{this.drinkRecipe.drinks[0].ingredients[i].ingredientName} - {this.drinkRecipe.drinks[0].ingredients[i].ingredientAmount} cl\n";
+            currentRecipe += $"{drinkRecipe.drinks[drinkRandomiser.drinkIndex].ingredients[i].ingredientName} - {drinkRecipe.drinks[drinkRandomiser.drinkIndex].ingredients[i].ingredientAmount} cl\n";
         }
         recipeText.text = currentRecipe;
     }
