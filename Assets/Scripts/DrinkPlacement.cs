@@ -7,7 +7,7 @@ public class DrinkPlacement : MonoBehaviour
     public ConvaiNPC _npc; // Assign your Convai NPC in the Inspector
     private bool hasInteractedWithDrink = false; // Flag to prevent multiple interactions
 
-
+    public DrinkChecker drinkChecker;
     private void OnTriggerEnter(Collider other)
     {
         // Check if the object is the drink and the NPC hasn't interacted yet
@@ -46,7 +46,8 @@ public class DrinkPlacement : MonoBehaviour
 
     void EvaluateDrink(GameObject drinkObj)
     {
-        TempScore drink = drinkObj.GetComponent<TempScore>(); // Get the Drink component from the object
+        //TempScore drink = drinkObj.GetComponent<TempScore>(); // Get the Drink component from the object
+        DrinkClasses drink = drinkObj.GetComponent<DrinkClasses>(); // Get the Drink component from the object
 
         if (drink == null)
         {
@@ -54,12 +55,13 @@ public class DrinkPlacement : MonoBehaviour
             return;
         }
 
-        int score = drink.score; // Get the score attached to the drink
+        drinkChecker.CheckDrink(drink); // Check the drink against the recipe
+        int score = drinkChecker.scoreCounter.drinkStars; // Get the score from the ScoreCounter
         string npcResponse;
 
-        if (score > 8)
+        if (score > 4)
             npcResponse = "Now that’s a damn good drink.";
-        else if (score > 5)
+        else if (score > 2)
             npcResponse = "Eh, it’s alright.";
         else
             npcResponse = "Tastes like garbage. You tryna poison me?";
