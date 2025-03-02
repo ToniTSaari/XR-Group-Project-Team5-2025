@@ -628,52 +628,6 @@ Canvas:
   m_SortingLayerID: 0
   m_SortingOrder: 0
   m_TargetDisplay: 0
---- !u!1 &606061766
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 606061768}
-  - component: {fileID: 606061767}
-  m_Layer: 0
-  m_Name: ScoreCounter
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &606061767
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 606061766}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d5923b3e999f2134a9e30fd0215e7bbf, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  correctnessPercentage: 0
-  drinkStars: 0
---- !u!4 &606061768
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 606061766}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -11.834676, y: -1.9274383, z: 25.915545}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &637372326
 GameObject:
   m_ObjectHideFlags: 0
@@ -1394,7 +1348,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   drinkObject: {fileID: 1261536948}
   drinkRecipes: {fileID: 377664734}
-  scoreCounter: {fileID: 606061767}
+  scoreCounter: {fileID: 169024706}
 --- !u!4 &1860385323
 Transform:
   m_ObjectHideFlags: 0
@@ -1676,4 +1630,3 @@ SceneRoots:
   - {fileID: 637372328}
   - {fileID: 169024703}
   - {fileID: 461841177}
-  - {fileID: 606061768}
