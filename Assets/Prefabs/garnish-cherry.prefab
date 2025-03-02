@@ -17,7 +17,7 @@ GameObject:
   - component: {fileID: 2763372310414702285}
   m_Layer: 9
   m_Name: garnish-cherry
-  m_TagString: Untagged
+  m_TagString: Garnish
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -147,7 +147,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4539c924118bf7842ba8b2ce41c61087, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  timeToDestroy: 15
   garnishType: 2
 --- !u!114 &2763372310414702285
 MonoBehaviour:

@@ -9,6 +9,8 @@ TagManager:
   - SenderTMP
   - Liquid
   - Character
+  - Drink
+  - Garnish
   layers:
   - Default
   - TransparentFX
