@@ -2,82 +2,42 @@
 using UnityEngine;
 using UnityEngine.XR.Interaction.Toolkit;
 
+[RequireComponent(typeof(XRGrabInteractable))]
+[RequireComponent(typeof(Rigidbody))]
+[RequireComponent(typeof(Collider))]
 public class Garnish : MonoBehaviour
 {
     // --- Enum for Garnish Types ---
-    public enum GarnishType { Lemon, Olive, Cherry, Ice, Mint } // Add all your garnish types here
+    public enum GarnishType { Lemon, Olive, Cherry, Ice, Mint }
 
     // --- Public Variables ---
-    public bool IsInGlass { get; private set; } = false;
-    public float timeToDestroy = 15f;
-    public GarnishType garnishType; // This is the important addition
+    public GarnishType garnishType; // Set in Inspector
 
     // --- Private Variables ---
-    private float _timer = 0f;
-    private bool _isGrounded = false;
     private Rigidbody _rb;
     private XRGrabInteractable _grabInteractable;
 
-    void Start()
+    private void Awake()
     {
         _rb = GetComponent<Rigidbody>();
         _grabInteractable = GetComponent<XRGrabInteractable>();
-        _grabInteractable.selectExited.AddListener(OnReleased);
-    }
-
-    void Update()
-    {
-        if (!IsInGlass && !_rb.isKinematic)
-        {
-            if (_isGrounded)
-            {
-                _timer += Time.deltaTime;
-                if (_timer >= timeToDestroy)
-                {
-                    Destroy(gameObject);
-                }
-            }
-        }
-        else
-        {
-            _timer = 0f;
-        }
     }
 
     public void PlaceInGlass(Transform glassTransform)
     {
-        IsInGlass = true;
+        // 1. Parent to the attachment point (which is a child of the glass).
+        transform.SetParent(glassTransform);
+
+        // 2. Disable Physics *COMPLETELY*
         _rb.isKinematic = true;
-        transform.SetParent(glassTransform, worldPositionStays: true);
-        _timer = 0f;
-    }
+        _rb.detectCollisions = false;
+        GetComponent<Collider>().enabled = false;
 
-    private void OnCollisionEnter(Collision collision)
-    {
-        if (collision.gameObject.layer == LayerMask.NameToLayer("Default"))
-        {
-            _isGrounded = true;
-        }
-    }
+        // 3. Disable Grabbing
+        _grabInteractable.enabled = false;
 
-    private void OnCollisionExit(Collision collision)
-    {
-        if (collision.gameObject.layer == LayerMask.NameToLayer("Default"))
-        {
-            _isGrounded = false;
-            _timer = 0;
-        }
-    }
-
-    private void OnReleased(SelectExitEventArgs args)
-    {
-        _rb.isKinematic = false;
-    }
-    void OnDestroy()
-    {
-        if (_grabInteractable != null)
-        {
-            _grabInteractable.selectExited.RemoveListener(OnReleased);
-        }
+        // 4. Set *local* position and rotation to zero.
+        transform.localPosition = Vector3.zero;
+        transform.localRotation = Quaternion.identity;
     }
 }
