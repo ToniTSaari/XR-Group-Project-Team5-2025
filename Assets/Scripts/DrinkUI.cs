@@ -16,7 +16,7 @@ public class DrinkUI : MonoBehaviour
     {
         if(drinkObject != null && drinkObject.drinks.Count != 0 && drinkObject.drinks != null) 
         {
-            DrinkClasses.DrinkObject drink = drinkObject.drinks[drinkRandomiser.drinkIndex];
+            DrinkClasses.DrinkObject drink = drinkRecipes.drinks[drinkRandomiser.drinkIndex];
             if (drink.ingredients.Count == 0)
             {
                 drinkUI.text = "Empty glass of " + drink.drinkName;
@@ -46,6 +46,8 @@ public class DrinkUI : MonoBehaviour
     }
     private void Start()
     {
+        drinkObject = new DrinkClasses();
+        drinkObject.drinks.Clear();
         drinkObject.drinks[0].drinkName += drinkRecipes.drinks[drinkRandomiser.drinkIndex].drinkName;
         displayDrink();
     }

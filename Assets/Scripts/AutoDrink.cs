@@ -2,6 +2,7 @@ using Convai.Scripts.Runtime.Core;
 using System.Collections.Generic;
 using System.Collections;
 using UnityEngine;
+using static DrinkClasses;
 
 public class AutoDrink : MonoBehaviour
 {
@@ -9,6 +10,7 @@ public class AutoDrink : MonoBehaviour
     private bool hasInteractedWithDrink = false; // Prevents multiple activations
     private bool isPromptSent = false; // Prevents multiple sends of the same prompt
     public DrinkChecker drinkChecker;
+    public DrinkClasses drinkObject;
 
     private void OnTriggerEnter(Collider other)
     {
@@ -89,6 +91,7 @@ public class AutoDrink : MonoBehaviour
 
         Destroy(drinkObj); // Remove the drink after it's "consumed"
         Debug.Log("Drink object destroyed.");
+        drinkObject.drinks.Clear();
 
         hasInteractedWithDrink = false; // Reset for new drinks
         isPromptSent = false;
